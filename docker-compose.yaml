@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  mongodb:
+    container_name: cafe_db
+    image: postgres:latest
+    ports:
+      - 5432:5432
+    volumes:
+      - /cafe/data:/var/lib/postgresql/cafe/data
+    environment:
+      - POSTGRES_DB=${PG_DB}
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASS}
