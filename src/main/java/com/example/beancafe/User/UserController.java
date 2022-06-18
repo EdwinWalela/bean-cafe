@@ -27,6 +27,7 @@ public class UserController {
 	public List<User> getUsers(){
 		return this.userService.getUsers();
 	}
+	
 	@GetMapping(path = "/{id}")
 	public User getUser(@PathVariable("id") Long id){
 		return this.userService.getUser(id);
