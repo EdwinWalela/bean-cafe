@@ -4,6 +4,15 @@ REST API for a fictional restaurant
 
 ## Run locally
 
+Create `.env`
+
+```
+PG_DB=
+PG_USER=
+PG_PASS=
+PG_HOST=
+```
+
 ```docker-compose up```
 
 
