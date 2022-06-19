@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +36,16 @@ public class UserController {
 	}
 	
 	@GetMapping(path = "/{id}")
-	public User getUser(@PathVariable("id") Long id){
-		return this.userService.getUser(id);
+	public ResponseEntity<Object> getUser(@PathVariable("id") Long id){
+		User user = new User();
+		try {
+			user = this.userService.getUser(id);
+		} catch(NoSuchElementException e){
+			return ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
+		} catch (Exception e) {
+		  return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+		return 	ResponseHandler.generateResponse("ok", HttpStatus.OK, user);
 	}
 
 	@PostMapping()
