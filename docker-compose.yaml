@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  mongodb:
+  cafe_db:
     container_name: cafe_db
     image: postgres:latest
     ports:
@@ -11,3 +11,18 @@ services:
       - POSTGRES_DB=${PG_DB}
       - POSTGRES_USER=${PG_USER}
       - POSTGRES_PASSWORD=${PG_PASS}
+  cafe:
+    container_name: cafe_api
+    build: .
+    depends_on:
+      - cafe_db
+    restart: on-failure
+    ports:
+      - 3000:3000
+    environment:
+      - PG_DB=${PG_DB}
+      - PG_HOST=${PG_HOST}
+      - PG_USER=${PG_USER}
+      - PG_PASS=${PG_PASS}
+    networks:
+      - cafe
