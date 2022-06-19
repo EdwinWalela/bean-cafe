@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,7 +48,7 @@ public class UserController {
 		} catch(IllegalArgumentException e){
 			return ResponseHandler.generateResponse("Email already in use", HttpStatus.BAD_REQUEST, null);
 		} catch (Exception e) {
-			return ResponseHandler.generateResponse("Failed to create user", HttpStatus.SERVICE_UNAVAILABLE, null);
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE, null);
 		}
 		return ResponseHandler.generateResponse("User created", HttpStatus.CREATED, user);
 		 
@@ -61,15 +62,21 @@ public class UserController {
 		} catch(NoSuchElementException e){
 			return ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
 		}catch (Exception e) {
-			return ResponseHandler.generateResponse("Update failed", HttpStatus.BAD_REQUEST, null);
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 		}
 		return ResponseHandler.generateResponse("User updated", HttpStatus.OK, user);
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public String deleteUser(@PathVariable("id") Long id){
-		this.userService.deleteUser(id);
-		return String.format("User %d deleted", id);
+	public ResponseEntity<Object> deleteUser(@PathVariable("id") Long id){
+		try {
+			this.userService.deleteUser(id);
+		}catch(EmptyResultDataAccessException e){
+			return ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+		return ResponseHandler.generateResponse("User deleted", HttpStatus.OK, null);
 	}	
 
 }
