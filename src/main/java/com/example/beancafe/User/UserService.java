@@ -39,14 +39,14 @@ public class UserService {
     User user = this.userRepository.findById(id).orElseThrow(
       () -> new NoSuchElementException()
     ); 
-
-    if(req.getName() != user.getName() && req.getName().length() > 0){
+    System.out.println(user);
+    if(req.getName() != null && req.getName().length() > 0){
       user.setName(req.getName());
     }
-    if(req.getAddress() != user.getAddress() && req.getAddress().length() > 0){
+    if(req.getAddress() != null && req.getAddress().length() > 0){
       user.setAddress(req.getAddress());
     }
-    if(req.getPhone() != user.getPhone() && req.getPhone().length() > 0){
+    if(req.getPhone() != null && req.getPhone().length() > 0){
       user.setPhone(req.getPhone());
     }
   }
