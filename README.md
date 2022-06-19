@@ -1,6 +1,6 @@
 ## Bean Cafe API
 
-REST API for a fictional restaurant
+Bean Cafe REST API
 
 ## Run locally
 
