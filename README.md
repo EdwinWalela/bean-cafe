@@ -12,7 +12,7 @@ PG_USER=
 PG_PASS=
 PG_HOST=
 ```
-
+Start services
 ```
 docker-compose up
 ```
