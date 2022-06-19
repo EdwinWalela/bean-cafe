@@ -31,8 +31,10 @@ public class UserController {
 	}
 
 	@GetMapping()
-	public List<User> getUsers(){
-		return this.userService.getUsers();
+	public ResponseEntity<Object> getUsers(){
+		List<User> users = this.userService.getUsers();
+
+		return ResponseHandler.generateResponse("ok", HttpStatus.OK, users);
 	}
 	
 	@GetMapping(path = "/{id}")
