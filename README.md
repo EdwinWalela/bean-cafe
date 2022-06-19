@@ -13,7 +13,9 @@ PG_PASS=
 PG_HOST=
 ```
 
-```docker-compose up```
+```
+docker-compose up
+```
 
 
 ## Endpoints
