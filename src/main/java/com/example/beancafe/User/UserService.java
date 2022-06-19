@@ -35,11 +35,10 @@ public class UserService {
   }
 
   @Transactional
-  public void updateUser(User req, Long id){
+  public User updateUser(User req, Long id){
     User user = this.userRepository.findById(id).orElseThrow(
       () -> new NoSuchElementException()
     ); 
-    System.out.println(user);
     if(req.getName() != null && req.getName().length() > 0){
       user.setName(req.getName());
     }
@@ -49,6 +48,7 @@ public class UserService {
     if(req.getPhone() != null && req.getPhone().length() > 0){
       user.setPhone(req.getPhone());
     }
+    return user;
   }
 
   public void deleteUser(Long id){
