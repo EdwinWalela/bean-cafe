@@ -39,8 +39,18 @@ public class UserController {
 	}
 
 	@PostMapping()
-	public User createUser(@RequestBody User user){
-		return this.userService.createUser(user); 
+	public ResponseEntity<Object> createUser(@RequestBody User req){
+		User user = new User();
+
+		try {
+			user = this.userService.createUser(req); 
+		} catch(IllegalArgumentException e){
+			return ResponseHandler.generateResponse("Email already in use", HttpStatus.BAD_REQUEST, null);
+		} catch (Exception e) {
+			return ResponseHandler.generateResponse("Failed to create user", HttpStatus.SERVICE_UNAVAILABLE, null);
+		}
+		return ResponseHandler.generateResponse("User created", HttpStatus.CREATED, user);
+		 
 	}
 
 	@PutMapping(path = "/{id}")
@@ -49,9 +59,9 @@ public class UserController {
 		try {
 			user = this.userService.updateUser(req, id);
 		} catch(NoSuchElementException e){
-			return ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, user);
+			return ResponseHandler.generateResponse("User not found", HttpStatus.NOT_FOUND, null);
 		}catch (Exception e) {
-			return ResponseHandler.generateResponse("Update failed", HttpStatus.BAD_REQUEST, user);
+			return ResponseHandler.generateResponse("Update failed", HttpStatus.BAD_REQUEST, null);
 		}
 		return ResponseHandler.generateResponse("User updated", HttpStatus.OK, user);
 	}
